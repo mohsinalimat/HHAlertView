@@ -29,7 +29,16 @@
     // Dispose of any resources that can be recreated.
 }
 - (IBAction)success:(id)sender {
-    [HHAlertView showAlertWithStyle:HHAlertStyleOk inView:self.view Title:@"Success" detail:@"You are successful!" cancelButton:nil Okbutton:@"Sure"];
+    [HHAlertView showAlertWithStyle:HHAlertStyleOk inView:self.view Title:@"Success" detail:@"You are successful!" cancelButton:nil Okbutton:@"Sure" block:^(HHAlertButton buttonindex) {
+        if (buttonindex == HHAlertButtonOk) {
+            NSLog(@"ok Button is seleced use block");
+        }
+        else
+        {
+            NSLog(@"cancel Button is seleced use block");
+
+        }
+    }];
 }
 - (IBAction)wraing:(id)sender {
     [HHAlertView showAlertWithStyle:HHAlertStyleWraing inView:self.view Title:@"Wraing" detail:@"Are you sure?" cancelButton:@"No" Okbutton:@"Sure"];
@@ -40,7 +49,15 @@
 
 - (void)didClickButtonAnIndex:(HHAlertButton)button
 {
-    NSLog(@"clicked");
+    if (button == HHAlertButtonOk) {
+        NSLog(@"ok Button is seleced use delegate");
+    }
+    else
+    {
+        NSLog(@"cancel Button is seleced use delegate");
+        
+    }
+
 }
 
 @end

@@ -14,8 +14,6 @@ typedef NS_ENUM(NSInteger, HHAlertButton)
     HHAlertButtonCancel
 };
 
-
-
 typedef NS_ENUM(NSInteger, HHAlertStyle)
 {
     HHAlertStyleDefault,
@@ -23,6 +21,8 @@ typedef NS_ENUM(NSInteger, HHAlertStyle)
     HHAlertStyleError,
     HHAlertStyleWraing,
 };
+
+typedef void (^selectButton)(HHAlertButton buttonindex);
 
 
 @protocol HHAlertViewDelegate <NSObject>
@@ -39,9 +39,6 @@ typedef NS_ENUM(NSInteger, HHAlertStyle)
 @end
 
 
-
-
-
 @interface HHAlertView : UIView
 
 /**
@@ -56,9 +53,41 @@ typedef NS_ENUM(NSInteger, HHAlertStyle)
  */
 + (void)Hide;
 
+/**
+ *  show the alertview and use delegate to know which button is clicked
+ *
+ *  @param HHAlertStyle style
+ *  @param view         view
+ *  @param title        title
+ *  @param detail       etail
+ *  @param cancel       cancelButtonTitle
+ *  @param ok           okButtonTitle
+ */
++ (void)showAlertWithStyle:(HHAlertStyle )HHAlertStyle
+                    inView:(UIView *)view
+                     Title:(NSString *)title
+                    detail:(NSString *)detail
+              cancelButton:(NSString *)cancel
+                  Okbutton:(NSString *)ok;
 
-+ (void)showAlertWithStyle:(HHAlertStyle )HHAlertStyle inView:(UIView *)view Title:(NSString *)title detail:(NSString *)detail cancelButton:(NSString *)cancel Okbutton:(NSString *)ok;
 
+/**
+ *  show the alertview and use Block to know which button is clicked
+ *
+ *  @param HHAlertStyle style
+ *  @param view         view
+ *  @param title        title
+ *  @param detail       etail
+ *  @param cancel       cancelButtonTitle
+ *  @param ok           okButtonTitle
+ */
++ (void)showAlertWithStyle:(HHAlertStyle)HHAlertStyle
+                    inView:(UIView *)view
+                     Title:(NSString *)title
+                    detail:(NSString *)detail
+              cancelButton:(NSString *)cancel
+                  Okbutton:(NSString *)ok
+                     block:(selectButton)block;
 
 @property (nonatomic, weak) id<HHAlertViewDelegate> delegate;
 

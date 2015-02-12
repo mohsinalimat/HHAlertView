@@ -26,7 +26,7 @@ NSInteger const Buutton_SIZE_HEIGHT      = 30;
 NSInteger const Mralertview_SIZE_TITLE_FONT = 25;
 NSInteger const Mralertview_SIZE_DETAIL_FONT = 18;
 
-
+static selectButton STAblock;
 
 
 @interface HHAlertView()
@@ -107,6 +107,50 @@ NSInteger const Mralertview_SIZE_DETAIL_FONT = 18;
 }
 
 
+
++ (void)showAlertWithStyle:(HHAlertStyle)HHAlertStyle inView:(UIView *)view Title:(NSString *)title detail:(NSString *)detail cancelButton:(NSString *)cancel Okbutton:(NSString *)ok block:(selectButton)block
+{
+ 
+    STAblock = block;
+    switch (HHAlertStyle) {
+        case HHAlertStyleDefault:
+        {
+            [[self shared] drawTick];
+        }
+            break;
+        case HHAlertStyleError:
+        {
+            [[self shared] drawError];
+        }
+            break;
+        case HHAlertStyleOk:
+        {
+            [[self shared] drawTick];
+        }
+            break;
+        case HHAlertStyleWraing:
+        {
+            [[self shared] drawWraing];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    
+    [[self shared] configtext:title detail:detail];
+    
+    
+    [[self shared] configButton:cancel Okbutton:ok];
+    
+    [view addSubview:[self shared]];
+    [[self shared] show];
+    
+}
+
+
+
 - (void)configtext:(NSString *)title detail:(NSString *)detail
 {
     if (_titleLabel==nil) {
@@ -145,7 +189,11 @@ NSInteger const Mralertview_SIZE_DETAIL_FONT = 18;
         [_OkButton setTitle:ok forState:UIControlStateNormal];
         [_OkButton setBackgroundColor:OKBUTTON_BACKGROUND_COLOR];
         [[_OkButton layer] setCornerRadius:5];
+     
         [_OkButton addTarget:self action:@selector(dismissWithOk) forControlEvents:UIControlEventTouchUpInside];
+
+        
+        
         [self addSubview:_OkButton];
         
     }
@@ -182,13 +230,27 @@ NSInteger const Mralertview_SIZE_DETAIL_FONT = 18;
 
 - (void)dismissWithCancel
 {
-    [_delegate didClickButtonAnIndex:HHAlertButtonCancel];
+    
+    if (STAblock!=nil) {
+        STAblock(HHAlertButtonCancel);
+    }
+    else
+    {
+        [_delegate didClickButtonAnIndex:HHAlertButtonCancel];
+    }
     [HHAlertView Hide];
 }
 
 - (void)dismissWithOk
 {
-    [_delegate didClickButtonAnIndex:HHAlertButtonOk];
+    
+    if (STAblock!=nil) {
+        STAblock(HHAlertButtonOk);
+    }
+    else
+    {
+        [_delegate didClickButtonAnIndex:HHAlertButtonOk];
+    }
     [HHAlertView Hide];
 }
 
@@ -208,6 +270,7 @@ NSInteger const Mralertview_SIZE_DETAIL_FONT = 18;
         [_cancelButton removeFromSuperview];
         _OkButton=nil;
         _cancelButton = nil;
+        STAblock=nil;
         [self removeFromSuperview];
     }];
 }
@@ -342,7 +405,6 @@ NSInteger const Mralertview_SIZE_DETAIL_FONT = 18;
     
     [path moveToPoint:CGPointMake(Simble_SIZE/2, Simble_SIZE/6*4.5)];
     [path addArcWithCenter:CGPointMake(Simble_SIZE/2, Simble_SIZE/6*4.5) radius:2 startAngle:0 endAngle:M_PI*2 clockwise:YES];
-    
     
     
     CAShapeLayer *layer = [[CAShapeLayer alloc] init];
