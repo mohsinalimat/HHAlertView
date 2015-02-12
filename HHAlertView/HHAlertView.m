@@ -67,10 +67,10 @@ NSInteger const Mralertview_SIZE_DETAIL_FONT = 18;
 }
 
 
-+ (void)showAlertWithStyle:(MralertStyle)MralertStyle inView:(UIView *)view Title:(NSString *)title detail:(NSString *)detail cancelButton:(NSString *)cancel Okbutton:(NSString *)ok
++ (void)showAlertWithStyle:(HHAlertStyle )HHAlertStyle inView:(UIView *)view Title:(NSString *)title detail:(NSString *)detail cancelButton:(NSString *)cancel Okbutton:(NSString *)ok
 {
     
-    switch (MralertStyle) {
+    switch (HHAlertStyle) {
         case HHAlertStyleDefault:
         {
             [[self shared] drawTick];
@@ -182,11 +182,13 @@ NSInteger const Mralertview_SIZE_DETAIL_FONT = 18;
 
 - (void)dismissWithCancel
 {
+    [_delegate didClickButtonAnIndex:HHAlertButtonCancel];
     [HHAlertView Hide];
 }
 
 - (void)dismissWithOk
 {
+    [_delegate didClickButtonAnIndex:HHAlertButtonOk];
     [HHAlertView Hide];
 }
 

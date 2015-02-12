@@ -8,16 +8,38 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, HHAlertButton)
+{
+    HHAlertButtonOk,
+    HHAlertButtonCancel
+};
 
 
 
-typedef NS_ENUM(NSInteger, MralertStyle)
+typedef NS_ENUM(NSInteger, HHAlertStyle)
 {
     HHAlertStyleDefault,
     HHAlertStyleOk,
     HHAlertStyleError,
     HHAlertStyleWraing,
 };
+
+
+@protocol HHAlertViewDelegate <NSObject>
+
+
+@optional
+/**
+ *  the delegate to tell user whitch button is clicked
+ *
+ *  @param button button
+ */
+- (void)didClickButtonAnIndex:(HHAlertButton )button;
+
+@end
+
+
+
 
 
 @interface HHAlertView : UIView
@@ -35,9 +57,9 @@ typedef NS_ENUM(NSInteger, MralertStyle)
 + (void)Hide;
 
 
-+ (void)showAlertWithStyle:(MralertStyle )MralertStyle inView:(UIView *)view Title:(NSString *)title detail:(NSString *)detail cancelButton:(NSString *)cancel Okbutton:(NSString *)ok;
++ (void)showAlertWithStyle:(HHAlertStyle )HHAlertStyle inView:(UIView *)view Title:(NSString *)title detail:(NSString *)detail cancelButton:(NSString *)cancel Okbutton:(NSString *)ok;
 
 
-
+@property (nonatomic, weak) id<HHAlertViewDelegate> delegate;
 
 @end

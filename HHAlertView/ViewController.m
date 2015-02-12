@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "HHAlertView.h"
 
-@interface ViewController ()
+@interface ViewController ()<HHAlertViewDelegate>
 
 @end
 
@@ -18,6 +18,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    
+    
+    //config the alertview
+    [[HHAlertView shared] setDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,6 +36,11 @@
 }
 - (IBAction)error:(id)sender {
     [HHAlertView showAlertWithStyle:HHAlertStyleError inView:self.view Title:@"Error" detail:@"Some thing must be error!" cancelButton:nil Okbutton:@"I konw"];
+}
+
+- (void)didClickButtonAnIndex:(HHAlertButton)button
+{
+    NSLog(@"clicked");
 }
 
 @end
