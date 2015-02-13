@@ -255,7 +255,7 @@ static selectButton STAblock;
 }
 
 
-- (void)distory
+- (void)destroy
 {
     
     [UIView animateWithDuration:0.5 animations:^{
@@ -295,7 +295,7 @@ static selectButton STAblock;
 
 + (void)Hide
 {
-    [[self shared] distory];
+    [[self shared] destroy];
 }
 
 
