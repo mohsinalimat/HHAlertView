@@ -17,17 +17,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    
-    
     //config the alertview
     [[HHAlertView shared] setDelegate:self];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 - (IBAction)success:(id)sender {
     [HHAlertView showAlertWithStyle:HHAlertStyleOk inView:self.view Title:@"Success" detail:@"You are successful!" cancelButton:nil Okbutton:@"Sure" block:^(HHAlertButton buttonindex) {
         if (buttonindex == HHAlertButtonOk) {
@@ -57,7 +50,6 @@
         NSLog(@"cancel Button is seleced use delegate");
         
     }
-
 }
 
 @end
