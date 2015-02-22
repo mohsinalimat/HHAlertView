@@ -2,12 +2,19 @@
 An iOS AlertView Library ,with Error,Success,Warning 
  ![image](https://raw.githubusercontent.com/mrchenhao/HHAlertView/master/gif/error.gif)
  
- ![image](https://raw.githubusercontent.com/mrchenhao/HHAlertView/master/gif/success.gif)
  
- ![image](https://raw.githubusercontent.com/mrchenhao/HHAlertView/master/gif/wraing.gif)
  
  
  It's very esay to use HHAlertView
+
+ # setup
+
+ ### use pod
+
+ ```
+ pod 'HHAlertView', '~> 0.0.1'
+ 
+ ```
  
  
  ```
@@ -17,6 +24,11 @@ An iOS AlertView Library ,with Error,Success,Warning
  
  enjoy it!
  
+ ## demo
+ 
+ ![image](https://raw.githubusercontent.com/mrchenhao/HHAlertView/master/gif/success.gif)
+ 
+ ![image](https://raw.githubusercontent.com/mrchenhao/HHAlertView/master/gif/wraing.gif)
  
  
  
