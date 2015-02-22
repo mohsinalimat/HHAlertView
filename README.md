@@ -1,5 +1,5 @@
 # HHAlertView
-An iOS AlertView Library ,with Error,Success,Waing 
+An iOS AlertView Library ,with Error,Success,Warning 
  ![image](https://raw.githubusercontent.com/mrchenhao/HHAlertView/master/gif/error.gif)
  
  ![image](https://raw.githubusercontent.com/mrchenhao/HHAlertView/master/gif/success.gif)
