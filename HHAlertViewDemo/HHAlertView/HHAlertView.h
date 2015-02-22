@@ -24,7 +24,7 @@ typedef NS_ENUM(NSInteger, HHAlertStyle)
     HHAlertStyleDefault,
     HHAlertStyleOk,
     HHAlertStyleError,
-    HHAlertStyleWraing,
+    HHAlertStyleWraning,
 };
 
 /**

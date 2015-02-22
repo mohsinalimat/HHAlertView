@@ -34,7 +34,7 @@
     }];
 }
 - (IBAction)wraing:(id)sender {
-    [HHAlertView showAlertWithStyle:HHAlertStyleWraing inView:self.view Title:@"Wraing" detail:@"Are you sure?" cancelButton:@"No" Okbutton:@"Sure"];
+    [HHAlertView showAlertWithStyle:HHAlertStyleWraning inView:self.view Title:@"Wraing" detail:@"Are you sure?" cancelButton:@"No" Okbutton:@"Sure"];
 }
 - (IBAction)error:(id)sender {
     [HHAlertView showAlertWithStyle:HHAlertStyleError inView:self.view Title:@"Error" detail:@"Some thing must be error!" cancelButton:nil Okbutton:@"I konw"];

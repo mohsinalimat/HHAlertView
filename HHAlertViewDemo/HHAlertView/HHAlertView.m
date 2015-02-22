@@ -86,9 +86,9 @@ static selectButton STAblock;
             [[self shared] drawTick];
         }
             break;
-        case HHAlertStyleWraing:
+        case HHAlertStyleWraning:
         {
-            [[self shared] drawWraing];
+            [[self shared] drawWraning];
         }
             break;
             
@@ -128,9 +128,9 @@ static selectButton STAblock;
             [[self shared] drawTick];
         }
             break;
-        case HHAlertStyleWraing:
+        case HHAlertStyleWraning:
         {
-            [[self shared] drawWraing];
+            [[self shared] drawWraning];
         }
             break;
             
@@ -390,7 +390,7 @@ static selectButton STAblock;
     [self addSubview:_logoView];
 }
 
-- (void)drawWraing
+- (void)drawWraning
 {
     [_logoView removeFromSuperview];
     _logoView = [[UIView alloc] initWithFrame:CGRectMake(([self getSelfSize].width-Simble_SIZE)/2, Simble_TOP, Simble_SIZE, Simble_SIZE)];
