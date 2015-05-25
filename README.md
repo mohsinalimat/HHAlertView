@@ -40,4 +40,4 @@ It's easy to use,enjoy it!
  
  
  
- email:info@mrchenhao.com
+Email:info@mrchenhao.com
