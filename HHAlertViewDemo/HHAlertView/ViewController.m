@@ -22,7 +22,7 @@
 }
 
 - (IBAction)success:(id)sender {
-    [HHAlertView showAlertWithStyle:HHAlertStyleOk inView:self.view Title:@"Success" detail:@"You are successful!" cancelButton:nil Okbutton:@"Sure" block:^(HHAlertButton buttonindex) {
+    [[HHAlertView shared] showAlertWithStyle:HHAlertStyleOk inView:self.view Title:@"Success" detail:@"You are success fuldddddddddddddddddddd!" cancelButton:nil Okbutton:@"Sure" block:^(HHAlertButton buttonindex) {
         if (buttonindex == HHAlertButtonOk) {
             NSLog(@"ok Button is seleced use block");
         }
@@ -34,10 +34,10 @@
     }];
 }
 - (IBAction)wraing:(id)sender {
-    [HHAlertView showAlertWithStyle:HHAlertStyleWraning inView:self.view Title:@"Wraing" detail:@"Are you sure?" cancelButton:@"No" Okbutton:@"Sure"];
+    [[HHAlertView shared] showAlertWithStyle:HHAlertStyleWraning inView:self.view Title:@"Wraing" detail:@"Are you sure?" cancelButton:@"No" Okbutton:@"Sure"];
 }
 - (IBAction)error:(id)sender {
-    [HHAlertView showAlertWithStyle:HHAlertStyleError inView:self.view Title:@"Error" detail:@"Some thing must be error!" cancelButton:nil Okbutton:@"I konw"];
+    [[HHAlertView shared] showAlertWithStyle:HHAlertStyleError inView:self.view Title:@"Error" detail:@"Some thing must be error!" cancelButton:nil Okbutton:@"I konw"];
 }
 
 - (void)didClickButtonAnIndex:(HHAlertButton)button

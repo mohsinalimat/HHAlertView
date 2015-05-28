@@ -54,14 +54,14 @@ typedef void (^selectButton)(HHAlertButton buttonindex);
 /**
  *  the singleton of the calss
  *
- *  @return the sington
+ *  @return the singleton
  */
 + (instancetype)shared;
 
 /**
  *  dismiss the alertview
  */
-+ (void)Hide;
+- (void)hide;
 
 /**
  *  show the alertview and use delegate to know which button is clicked
@@ -73,7 +73,7 @@ typedef void (^selectButton)(HHAlertButton buttonindex);
  *  @param cancel       cancelButtonTitle
  *  @param ok           okButtonTitle
  */
-+ (void)showAlertWithStyle:(HHAlertStyle )HHAlertStyle
+- (void)showAlertWithStyle:(HHAlertStyle )HHAlertStyle
                     inView:(UIView *)view
                      Title:(NSString *)title
                     detail:(NSString *)detail
@@ -91,7 +91,7 @@ typedef void (^selectButton)(HHAlertButton buttonindex);
  *  @param cancel       cancelButtonTitle
  *  @param ok           okButtonTitle
  */
-+ (void)showAlertWithStyle:(HHAlertStyle)HHAlertStyle
+- (void)showAlertWithStyle:(HHAlertStyle)HHAlertStyle
                     inView:(UIView *)view
                      Title:(NSString *)title
                     detail:(NSString *)detail
