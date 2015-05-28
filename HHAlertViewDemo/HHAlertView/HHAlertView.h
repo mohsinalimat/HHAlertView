@@ -19,12 +19,17 @@ typedef NS_ENUM(NSInteger, HHAlertButton){
 /*
  *the style of the logo
  */
-typedef NS_ENUM(NSInteger, HHAlertStyle)
-{
+typedef NS_ENUM(NSInteger, HHAlertStyle){
     HHAlertStyleDefault,
     HHAlertStyleOk,
     HHAlertStyleError,
     HHAlertStyleWraning,
+};
+
+typedef NS_ENUM(NSInteger, HHAlertEnterStyle){
+    HHAlertEnterStyleCenter,
+    
+
 };
 
 /**

@@ -43,14 +43,33 @@ static selectButton STAblock;
 
 @implementation HHAlertView
 
++ (instancetype)hiddenAlloc
+{
+    return [super alloc];
+}
 
++ (instancetype)alloc
+{
+    NSAssert(NO, @"请使用shared方法");
+    return nil;
+}
+
++ (instancetype)allocWithZone:(struct _NSZone *)zone
+{
+    return [self alloc];
+}
+
++ (instancetype)new
+{
+    return [self alloc];
+}
 
 + (instancetype)shared
 {
     static dispatch_once_t once = 0;
     static HHAlertView *alert;
     dispatch_once(&once, ^{
-        alert = [[HHAlertView alloc] init];
+        alert = [[HHAlertView hiddenAlloc] init];
     });
     return alert;
 }
@@ -178,6 +197,7 @@ static selectButton STAblock;
     [_detailLabel setTextAlignment:NSTextAlignmentCenter];
     [_detailLabel setLineBreakMode:NSLineBreakByWordWrapping];
     [_detailLabel sizeToFit];
+    [_detailLabel setFrame:CGRectMake(0, 0, [self getSelfSize].width, _detailLabel.frame.size.height)];
     [_detailLabel setCenter:CGPointMake([self getSelfSize].width/2.0, Simble_SIZE+Simble_TOP+HHAlertview_SIZE_TITLE_FONT+25+_detailLabel.frame.size.height/2)];
     [self addSubview:_detailLabel];
     
@@ -201,12 +221,8 @@ static selectButton STAblock;
      
         [_OkButton addTarget:self action:@selector(dismissWithOk) forControlEvents:UIControlEventTouchUpInside];
 
-        
-        
         [self addSubview:_OkButton];
-        
     }
-    
     
     if (cancel!=nil && ok!=nil) {
         if (_cancelButton == nil) {
@@ -218,8 +234,6 @@ static selectButton STAblock;
         [[_cancelButton layer] setCornerRadius:5];
         [_cancelButton addTarget:self action:@selector(dismissWithCancel) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_cancelButton];
-        
-        
         
         if (_OkButton==nil) {
             _OkButton = [[UIButton alloc] initWithFrame:CGRectMake(([self getSelfSize].width/2-100)/2+[self getSelfSize].width/2, [self getSelfSize].height-Buutton_SIZE_HEIGHT-10, Button_SIZE_WIDTH, Buutton_SIZE_HEIGHT)];
@@ -239,7 +253,6 @@ static selectButton STAblock;
 
 - (void)dismissWithCancel
 {
-    
     if (STAblock!=nil) {
         STAblock(HHAlertButtonCancel);
     }
@@ -252,7 +265,6 @@ static selectButton STAblock;
 
 - (void)dismissWithOk
 {
-    
     if (STAblock!=nil) {
         STAblock(HHAlertButtonOk);
     }
@@ -300,9 +312,6 @@ static selectButton STAblock;
     }];
     
 }
-
-
-
 
 
 #pragma helper mehtod
