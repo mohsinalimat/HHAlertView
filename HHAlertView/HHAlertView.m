@@ -26,9 +26,6 @@ NSInteger const Buutton_SIZE_HEIGHT      = 30;
 NSInteger const HHAlertview_SIZE_TITLE_FONT = 25;
 NSInteger const HHAlertview_SIZE_DETAIL_FONT = 18;
 
-static selectButton STAblock;
-
-
 @interface HHAlertView()
 
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -38,57 +35,71 @@ static selectButton STAblock;
 
 @property (nonatomic, strong) UIView *logoView;
 
+@property (nonatomic, copy) selectButton secletBlock;
+
 @end
 
 
 @implementation HHAlertView
 
++ (instancetype)hiddenAlloc
+{
+    return [super alloc];
+}
 
++ (instancetype)alloc
+{
+    NSAssert(NO, @"请使用shared方法");
+    return nil;
+}
+
++ (instancetype)new
+{
+    return [self alloc];
+}
 
 + (instancetype)shared
 {
     static dispatch_once_t once = 0;
     static HHAlertView *alert;
     dispatch_once(&once, ^{
-        alert = [[HHAlertView alloc] init];
+        alert = [[self hiddenAlloc] init];
     });
     return alert;
 }
 
 
-
-- (instancetype)init
+- (void)uiStyle
 {
-    self = [[HHAlertView alloc] initWithFrame:CGRectMake(([self getMainScreenSize].width-HHAlertview_SIZE_WIDTH)/2, ([self getMainScreenSize].height-HHAlertview_SIZE_HEIGHT)/2, HHAlertview_SIZE_WIDTH, HHAlertview_SIZE_HEIGHT)];
+    [self setFrame:CGRectMake(([self getMainScreenSize].width-HHAlertview_SIZE_WIDTH)/2, ([self getMainScreenSize].height-HHAlertview_SIZE_HEIGHT)/2, HHAlertview_SIZE_WIDTH, HHAlertview_SIZE_HEIGHT)];
     self.alpha = 0;
     [self setBackgroundColor:[UIColor whiteColor]];
-    
-    return self;
 }
 
 
-+ (void)showAlertWithStyle:(HHAlertStyle )HHAlertStyle inView:(UIView *)view Title:(NSString *)title detail:(NSString *)detail cancelButton:(NSString *)cancel Okbutton:(NSString *)ok
+- (void)showAlertWithStyle:(HHAlertStyle )HHAlertStyle inView:(UIView *)view Title:(NSString *)title detail:(NSString *)detail cancelButton:(NSString *)cancel Okbutton:(NSString *)ok
 {
     
+    [self uiStyle];
     switch (HHAlertStyle) {
         case HHAlertStyleDefault:
         {
-            [[self shared] drawTick];
+            [[HHAlertView shared] drawTick];
         }
             break;
         case HHAlertStyleError:
         {
-            [[self shared] drawError];
+            [[HHAlertView shared] drawError];
         }
             break;
         case HHAlertStyleOk:
         {
-            [[self shared] drawTick];
+            [[HHAlertView shared] drawTick];
         }
             break;
-        case HHAlertStyleWraing:
+        case HHAlertStyleWraning:
         {
-            [[self shared] drawWraing];
+            [[HHAlertView shared] drawWraning];
         }
             break;
             
@@ -97,40 +108,41 @@ static selectButton STAblock;
     }
     
     
-    [[self shared] configtext:title detail:detail];
+    [self configtext:title detail:detail];
     
     
-    [[self shared] configButton:cancel Okbutton:ok];
+    [self configButton:cancel Okbutton:ok];
     
-    [view addSubview:[self shared]];
-    [[self shared] show];
+    [view addSubview:self];
+    [self show];
 }
 
 
 
-+ (void)showAlertWithStyle:(HHAlertStyle)HHAlertStyle inView:(UIView *)view Title:(NSString *)title detail:(NSString *)detail cancelButton:(NSString *)cancel Okbutton:(NSString *)ok block:(selectButton)block
+- (void)showAlertWithStyle:(HHAlertStyle)HHAlertStyle inView:(UIView *)view Title:(NSString *)title detail:(NSString *)detail cancelButton:(NSString *)cancel Okbutton:(NSString *)ok block:(selectButton)block
 {
  
-    STAblock = block;
+    [self uiStyle];
+    _secletBlock = block;
     switch (HHAlertStyle) {
         case HHAlertStyleDefault:
         {
-            [[self shared] drawTick];
+            [self drawTick];
         }
             break;
         case HHAlertStyleError:
         {
-            [[self shared] drawError];
+            [self drawError];
         }
             break;
         case HHAlertStyleOk:
         {
-            [[self shared] drawTick];
+            [self drawTick];
         }
             break;
-        case HHAlertStyleWraing:
+        case HHAlertStyleWraning:
         {
-            [[self shared] drawWraing];
+            [self drawWraning];
         }
             break;
             
@@ -139,18 +151,22 @@ static selectButton STAblock;
     }
     
     
-    [[self shared] configtext:title detail:detail];
+    [self configtext:title detail:detail];
     
+    [self configButton:cancel Okbutton:ok];
     
-    [[self shared] configButton:cancel Okbutton:ok];
-    
-    [view addSubview:[self shared]];
-    [[self shared] show];
+    [view addSubview:self];
+    [self show];
     
 }
 
+- (void)hide
+{
+    [self destroy];
+}
 
 
+#pragma mark private method
 - (void)configtext:(NSString *)title detail:(NSString *)detail
 {
     if (_titleLabel==nil) {
@@ -163,13 +179,18 @@ static selectButton STAblock;
     [self addSubview:_titleLabel];
     
     if (_detailLabel==nil) {
-        _detailLabel  = [[UILabel alloc] initWithFrame:CGRectMake(0, Simble_SIZE+Simble_TOP+HHAlertview_SIZE_TITLE_FONT+25, [self getSelfSize].width, HHAlertview_SIZE_TITLE_FONT)];
+        _detailLabel  = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, [self getSelfSize].width, HHAlertview_SIZE_TITLE_FONT)];
     }
     
     _detailLabel.text = detail;
     _detailLabel.textColor = [UIColor grayColor];
+    [_detailLabel setNumberOfLines:0];
     [_detailLabel setFont:[UIFont systemFontOfSize:HHAlertview_SIZE_DETAIL_FONT]];
     [_detailLabel setTextAlignment:NSTextAlignmentCenter];
+    [_detailLabel setLineBreakMode:NSLineBreakByWordWrapping];
+    [_detailLabel sizeToFit];
+    [_detailLabel setFrame:CGRectMake(0, 0, [self getSelfSize].width, _detailLabel.frame.size.height)];
+    [_detailLabel setCenter:CGPointMake([self getSelfSize].width/2.0, Simble_SIZE+Simble_TOP+HHAlertview_SIZE_TITLE_FONT+25+_detailLabel.frame.size.height/2)];
     [self addSubview:_detailLabel];
     
 }
@@ -192,12 +213,8 @@ static selectButton STAblock;
      
         [_OkButton addTarget:self action:@selector(dismissWithOk) forControlEvents:UIControlEventTouchUpInside];
 
-        
-        
         [self addSubview:_OkButton];
-        
     }
-    
     
     if (cancel!=nil && ok!=nil) {
         if (_cancelButton == nil) {
@@ -209,8 +226,6 @@ static selectButton STAblock;
         [[_cancelButton layer] setCornerRadius:5];
         [_cancelButton addTarget:self action:@selector(dismissWithCancel) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_cancelButton];
-        
-        
         
         if (_OkButton==nil) {
             _OkButton = [[UIButton alloc] initWithFrame:CGRectMake(([self getSelfSize].width/2-100)/2+[self getSelfSize].width/2, [self getSelfSize].height-Buutton_SIZE_HEIGHT-10, Button_SIZE_WIDTH, Buutton_SIZE_HEIGHT)];
@@ -230,28 +245,26 @@ static selectButton STAblock;
 
 - (void)dismissWithCancel
 {
-    
-    if (STAblock!=nil) {
-        STAblock(HHAlertButtonCancel);
+    if (_secletBlock!=nil) {
+        _secletBlock(HHAlertButtonCancel);
     }
     else
     {
         [_delegate didClickButtonAnIndex:HHAlertButtonCancel];
     }
-    [HHAlertView Hide];
+    [self hide];
 }
 
 - (void)dismissWithOk
 {
-    
-    if (STAblock!=nil) {
-        STAblock(HHAlertButtonOk);
+    if (_secletBlock!=nil) {
+        _secletBlock(HHAlertButtonOk);
     }
     else
     {
         [_delegate didClickButtonAnIndex:HHAlertButtonOk];
     }
-    [HHAlertView Hide];
+    [self hide];
 }
 
 
@@ -270,7 +283,7 @@ static selectButton STAblock;
         [_cancelButton removeFromSuperview];
         _OkButton=nil;
         _cancelButton = nil;
-        STAblock=nil;
+        _secletBlock=nil;
         [self removeFromSuperview];
     }];
 }
@@ -279,6 +292,7 @@ static selectButton STAblock;
 
 - (void)show
 {
+    
     [UIView animateWithDuration:0.5 animations:^{
         self.alpha=1;
         self.layer.cornerRadius = 10;
@@ -290,12 +304,6 @@ static selectButton STAblock;
         
     }];
     
-}
-
-
-+ (void)Hide
-{
-    [[self shared] destroy];
 }
 
 
@@ -356,7 +364,6 @@ static selectButton STAblock;
 
 - (void)drawTick
 {
-    
     [_logoView removeFromSuperview];
     _logoView = [[UIView alloc] initWithFrame:CGRectMake(([self getSelfSize].width-Simble_SIZE)/2, Simble_TOP, Simble_SIZE, Simble_SIZE)];
     
@@ -390,7 +397,7 @@ static selectButton STAblock;
     [self addSubview:_logoView];
 }
 
-- (void)drawWraing
+- (void)drawWraning
 {
     [_logoView removeFromSuperview];
     _logoView = [[UIView alloc] initWithFrame:CGRectMake(([self getSelfSize].width-Simble_SIZE)/2, Simble_TOP, Simble_SIZE, Simble_SIZE)];
