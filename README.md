@@ -10,14 +10,14 @@ An iOS AlertView Library ,with Error,Success,Warning
 ### use pod
 
  ```
- pod 'HHAlertView', '~> 0.0.1'
+ pod 'HHAlertView', '~> 0.0.3'
  
  ```
  
 ## How to use
  
  ```
- [HHAlertView showAlertWithStyle:HHAlertStyleOk inView:self.view Title:@"Success" detail:@"You are successful!" cancelButton:nil Okbutton:@"Sure"];
+ [[HHAlertView shared] showAlertWithStyle:HHAlertStyleOk inView:self.view Title:@"Success" detail:@"You are successful!" cancelButton:nil Okbutton:@"Sure"];
  
  ```
  
@@ -38,6 +38,8 @@ It's easy to use,enjoy it!
  ![image](https://raw.githubusercontent.com/mrchenhao/HHAlertView/master/gif/wraing.gif)
  
  
- 
+## Todo
+
+* custom the way to come 
  
 Email:info@mrchenhao.com
