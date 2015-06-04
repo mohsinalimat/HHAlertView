@@ -63,6 +63,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E510D20B1B16A20A002BF7ED /* class */ = {
+			isa = PBXGroup;
+			children = (
+				E5CE7A161A8CDC0B0065833A /* HHAlertView.h */,
+				E5CE7A171A8CDC0B0065833A /* HHAlertView.m */,
+			);
+			name = class;
+			sourceTree = "<group>";
+		};
 		E5CE79E41A8CDBF60065833A = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +93,7 @@
 		E5CE79EF1A8CDBF60065833A /* HHAlertView */ = {
 			isa = PBXGroup;
 			children = (
+				E510D20B1B16A20A002BF7ED /* class */,
 				E5CE79F41A8CDBF60065833A /* AppDelegate.h */,
 				E5CE79F51A8CDBF60065833A /* AppDelegate.m */,
 				E5CE79F71A8CDBF60065833A /* ViewController.h */,
@@ -91,8 +101,6 @@
 				E5CE79FA1A8CDBF60065833A /* Main.storyboard */,
 				E5CE79FD1A8CDBF60065833A /* Images.xcassets */,
 				E5CE79FF1A8CDBF60065833A /* LaunchScreen.xib */,
-				E5CE7A161A8CDC0B0065833A /* HHAlertView.h */,
-				E5CE7A171A8CDC0B0065833A /* HHAlertView.m */,
 				E5CE79F01A8CDBF60065833A /* Supporting Files */,
 			);
 			path = HHAlertView;
@@ -418,6 +426,7 @@
 				E5CE7A121A8CDBF60065833A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E5CE7A131A8CDBF60065833A /* Build configuration list for PBXNativeTarget "HHAlertViewTests" */ = {
 			isa = XCConfigurationList;
@@ -426,6 +435,7 @@
 				E5CE7A151A8CDBF60065833A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
