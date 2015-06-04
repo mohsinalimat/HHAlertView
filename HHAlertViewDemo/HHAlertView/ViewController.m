@@ -21,7 +21,7 @@
     [[HHAlertView shared] setDelegate:self];
     
     
-    [[HHAlertView alloc] init];
+    //[[HHAlertView alloc] init];//直接调用被奔溃
 }
 
 - (IBAction)success:(id)sender {

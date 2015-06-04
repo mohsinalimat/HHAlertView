@@ -54,11 +54,6 @@ static selectButton STAblock;
     return nil;
 }
 
-+ (instancetype)allocWithZone:(struct _NSZone *)zone
-{
-    return [self alloc];
-}
-
 + (instancetype)new
 {
     return [self alloc];
@@ -69,26 +64,24 @@ static selectButton STAblock;
     static dispatch_once_t once = 0;
     static HHAlertView *alert;
     dispatch_once(&once, ^{
-        alert = [[HHAlertView hiddenAlloc] init];
+        alert = [[self hiddenAlloc] init];
     });
     return alert;
 }
 
 
-
-- (instancetype)init
+- (void)uiStyle
 {
-    self = [[HHAlertView alloc] initWithFrame:CGRectMake(([self getMainScreenSize].width-HHAlertview_SIZE_WIDTH)/2, ([self getMainScreenSize].height-HHAlertview_SIZE_HEIGHT)/2, HHAlertview_SIZE_WIDTH, HHAlertview_SIZE_HEIGHT)];
+    [self setFrame:CGRectMake(([self getMainScreenSize].width-HHAlertview_SIZE_WIDTH)/2, ([self getMainScreenSize].height-HHAlertview_SIZE_HEIGHT)/2, HHAlertview_SIZE_WIDTH, HHAlertview_SIZE_HEIGHT)];
     self.alpha = 0;
     [self setBackgroundColor:[UIColor whiteColor]];
-    
-    return self;
 }
 
 
 - (void)showAlertWithStyle:(HHAlertStyle )HHAlertStyle inView:(UIView *)view Title:(NSString *)title detail:(NSString *)detail cancelButton:(NSString *)cancel Okbutton:(NSString *)ok
 {
     
+    [self uiStyle];
     switch (HHAlertStyle) {
         case HHAlertStyleDefault:
         {
@@ -130,6 +123,7 @@ static selectButton STAblock;
 - (void)showAlertWithStyle:(HHAlertStyle)HHAlertStyle inView:(UIView *)view Title:(NSString *)title detail:(NSString *)detail cancelButton:(NSString *)cancel Okbutton:(NSString *)ok block:(selectButton)block
 {
  
+    [self uiStyle];
     STAblock = block;
     switch (HHAlertStyle) {
         case HHAlertStyleDefault:
@@ -300,6 +294,7 @@ static selectButton STAblock;
 
 - (void)show
 {
+    
     [UIView animateWithDuration:0.5 animations:^{
         self.alpha=1;
         self.layer.cornerRadius = 10;
