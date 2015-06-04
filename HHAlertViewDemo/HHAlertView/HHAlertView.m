@@ -26,9 +26,6 @@ NSInteger const Buutton_SIZE_HEIGHT      = 30;
 NSInteger const HHAlertview_SIZE_TITLE_FONT = 25;
 NSInteger const HHAlertview_SIZE_DETAIL_FONT = 18;
 
-static selectButton STAblock;
-
-
 @interface HHAlertView()
 
 @property (nonatomic, strong) UILabel *titleLabel;
@@ -37,6 +34,8 @@ static selectButton STAblock;
 @property (nonatomic, strong) UIButton *OkButton;
 
 @property (nonatomic, strong) UIView *logoView;
+
+@property (nonatomic, copy) selectButton secletBlock;
 
 @end
 
@@ -124,7 +123,7 @@ static selectButton STAblock;
 {
  
     [self uiStyle];
-    STAblock = block;
+    _secletBlock = block;
     switch (HHAlertStyle) {
         case HHAlertStyleDefault:
         {
@@ -153,7 +152,6 @@ static selectButton STAblock;
     
     
     [self configtext:title detail:detail];
-    
     
     [self configButton:cancel Okbutton:ok];
     
@@ -247,8 +245,8 @@ static selectButton STAblock;
 
 - (void)dismissWithCancel
 {
-    if (STAblock!=nil) {
-        STAblock(HHAlertButtonCancel);
+    if (_secletBlock!=nil) {
+        _secletBlock(HHAlertButtonCancel);
     }
     else
     {
@@ -259,8 +257,8 @@ static selectButton STAblock;
 
 - (void)dismissWithOk
 {
-    if (STAblock!=nil) {
-        STAblock(HHAlertButtonOk);
+    if (_secletBlock!=nil) {
+        _secletBlock(HHAlertButtonOk);
     }
     else
     {
@@ -285,7 +283,7 @@ static selectButton STAblock;
         [_cancelButton removeFromSuperview];
         _OkButton=nil;
         _cancelButton = nil;
-        STAblock=nil;
+        _secletBlock=nil;
         [self removeFromSuperview];
     }];
 }
