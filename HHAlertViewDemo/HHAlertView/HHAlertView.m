@@ -40,6 +40,7 @@
         self.radius  = KDefaultRadius;
         self.mode = HHAlertViewModeDefault;
         self.alpha   = 0.0;
+        self.removeFromSuperViewOnHide = YES;
         
         [self registerKVC];
         
@@ -76,6 +77,7 @@
 {
     [self addSubview:self.maskView];
     [self addSubview:self.mainAlertView];
+    
     [self.mainAlertView addSubview:self.logoView];
     [self.mainAlertView addSubview:self.titleLabel];
     [self.mainAlertView addSubview:self.detailLabel];
@@ -91,7 +93,7 @@
             [button setBackgroundColor:SUCCESS_COLOR];
         }
     }
-    else if(self.mode == HHAlertViewModeWarning){
+    if(self.mode == HHAlertViewModeWarning){
         [self.logoView hh_drawCheckWarning];
         [self.cancelButton setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
         [[self.cancelButton layer] setBorderColor:WARNING_COLOR.CGColor];
@@ -99,13 +101,28 @@
             [button setBackgroundColor:WARNING_COLOR];
         }
     }
-    else if(self.mode == HHAlertViewModeError){
+    if(self.mode == HHAlertViewModeError){
         [self.logoView hh_drawCheckError];
         [self.cancelButton setTitleColor:ERROR_COLOR forState:UIControlStateNormal];
         [[self.cancelButton layer] setBorderColor:ERROR_COLOR.CGColor];
         for (UIButton *button in self.otherButtons) {
             [button setBackgroundColor:ERROR_COLOR];
         }
+    }
+    if(self.mode == HHAlertViewModeCustom){
+        
+        //[self cleanLayer:self.logoView];
+        
+        if (self.customView) {
+            [self.logoView hh_drawCustomeView:self.customView];
+            
+        }
+        [self.cancelButton setTitleColor:SUCCESS_COLOR forState:UIControlStateNormal];
+        [[self.cancelButton layer] setBorderColor:SUCCESS_COLOR.CGColor];
+        for (UIButton *button in self.otherButtons) {
+            [button setBackgroundColor:SUCCESS_COLOR];
+        }
+        
     }
 }
 
@@ -227,6 +244,14 @@
 
 - (void)buttonTouch:(UIButton *)button
 {
+    if (self.completeBlock) {
+        self.completeBlock(button.tag - KbuttonTag);
+    }
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(HHAlertView:didClickButtonAnIndex:)]) {
+        [self.delegate HHAlertView:self didClickButtonAnIndex:button.tag - KbuttonTag];
+    }
+    
     [self hide];
 }
 
@@ -242,13 +267,21 @@
     }];
 }
 
+- (void)showWithBlock:(selectButtonIndexComplete)completeBlock
+{
+    self.completeBlock = completeBlock;
+    [self show];
+}
+
 - (void)hide
 {
     [UIView animateWithDuration:0.3 animations:^{
         
         [self setAlpha:0];
     } completion:^(BOOL finished) {
-        [self removeFromSuperview];
+        if (self.removeFromSuperViewOnHide) {
+            [self removeFromSuperview];
+        }
         [self unregisterKVC];
     }];
     
@@ -271,7 +304,7 @@
 }
 
 - (NSArray *)observableKeypaths {
-    return [NSArray arrayWithObjects:@"mode", nil];
+    return [NSArray arrayWithObjects:@"mode",@"customView", nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -289,7 +322,7 @@
 
 - (void)updateUIForKeypath:(NSString *)keypath
 {
-    if ([keypath isEqualToString:@"mode"]) {
+    if ([keypath isEqualToString:@"mode"] || [keypath isEqualToString:@"customView"]) {
         [self updateModeStyle];
     }
 }

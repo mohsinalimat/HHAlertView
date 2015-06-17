@@ -17,4 +17,6 @@
 
 - (void)hh_drawCheckWarning;
 
+- (void)hh_drawCustomeView:(UIView *)customView;
+
 @end

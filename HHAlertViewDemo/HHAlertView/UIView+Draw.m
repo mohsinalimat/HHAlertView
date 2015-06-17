@@ -86,6 +86,13 @@
     [self.layer addSublayer:layer];
 }
 
+- (void)hh_drawCustomeView:(UIView *)customView
+{
+    [self cleanLayer:self];
+    customView.frame = self.frame;
+    [self addSubview:customView];
+}
+
 - (void)cleanLayer:(UIView *)view
 {
     for (CALayer *layer in view.layer.sublayers) {
