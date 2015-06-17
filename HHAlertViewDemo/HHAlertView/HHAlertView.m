@@ -12,41 +12,18 @@
 #define OKBUTTON_BACKGROUND_COLOR [UIColor colorWithRed:158/255.0 green:214/255.0 blue:243/255.0 alpha:1]
 #define CANCELBUTTON_BACKGROUND_COLOR [UIColor colorWithRed:255/255.0 green:20/255.0 blue:20/255.0 alpha:1]
 
-#define SUCCESS_COLOR [UIColor colorWithRed:126/255.0 green:216/255.0 blue:33/255.0 alpha:1]
-
-
-static const CGFloat HHALERTVIEW_WIDTH = 260;
-static const CGFloat HHALERTVIEW_HEIGHT = 300;
-static const CGFloat HHALERTVIEW_PADDING = 20;
-
-static const CGFloat LOGOVIEW_SIZE      = 60;
-static const CGFloat Simble_TOP      = 20;
-
-static const CGFloat Button_SIZE_WIDTH        = 100;
-static const CGFloat Buutton_SIZE_HEIGHT      = 30;
-
-
-
-NSInteger const HHAlertview_SIZE_TITLE_FONT = 25;
-NSInteger const HHAlertview_SIZE_DETAIL_FONT = 18;
-
-
-static const CGFloat KDefaultRadius = 5.0;
 
 @interface HHAlertView()
 
 @property (nonatomic, strong) UILabel  *titleLabel;
 @property (nonatomic, strong) UILabel  *detailLabel;
 @property (nonatomic, strong) UIButton *cancelButton;
-@property (nonatomic, strong) NSArray  *ohherButtons;
+@property (nonatomic, strong) NSArray  *otherButtons;
 
 @property (nonatomic, strong) UIView   *logoView;
 @property (nonatomic, strong) UIView   *superView;//parant view
 @property (nonatomic, strong) UIView   *maskView;
 @property (nonatomic, strong) UIView   *mainAlertView; //main alert view
-
-
-
 
 @end
 
@@ -61,7 +38,10 @@ static const CGFloat KDefaultRadius = 5.0;
         self.xOffset = 0.0;
         self.yOffset = 0.0;
         self.radius  = KDefaultRadius;
+        self.mode = HHAlertViewModeDefault;
+        self.alpha   = 0.0;
         
+        [self registerKVC];
         
     }
     
@@ -96,22 +76,47 @@ static const CGFloat KDefaultRadius = 5.0;
 {
     [self addSubview:self.maskView];
     [self addSubview:self.mainAlertView];
-    self.logoView = [self getCheckmarkView];
     [self.mainAlertView addSubview:self.logoView];
     [self.mainAlertView addSubview:self.titleLabel];
     [self.mainAlertView addSubview:self.detailLabel];
+}
+
+- (void)updateModeStyle
+{
+    if (self.mode == HHAlertViewModeDefault || self.mode == HHAlertViewModeSuccess) {
+        [self.logoView hh_drawCheckmark];
+        [self.cancelButton setTitleColor:SUCCESS_COLOR forState:UIControlStateNormal];
+        [[self.cancelButton layer] setBorderColor:SUCCESS_COLOR.CGColor];
+        for (UIButton *button in self.otherButtons) {
+            [button setBackgroundColor:SUCCESS_COLOR];
+        }
+    }
+    else if(self.mode == HHAlertViewModeWarning){
+        [self.logoView hh_drawCheckWarning];
+        [self.cancelButton setTitleColor:WARNING_COLOR forState:UIControlStateNormal];
+        [[self.cancelButton layer] setBorderColor:WARNING_COLOR.CGColor];
+        for (UIButton *button in self.otherButtons) {
+            [button setBackgroundColor:WARNING_COLOR];
+        }
+    }
+    else if(self.mode == HHAlertViewModeError){
+        [self.logoView hh_drawCheckError];
+        [self.cancelButton setTitleColor:ERROR_COLOR forState:UIControlStateNormal];
+        [[self.cancelButton layer] setBorderColor:ERROR_COLOR.CGColor];
+        for (UIButton *button in self.otherButtons) {
+            [button setBackgroundColor:ERROR_COLOR];
+        }
+    }
 }
 
 - (void)setupLabel
 {
     [self.titleLabel setText:self.titleText];
     [self.titleLabel sizeToFit];
-    
     [self.detailLabel setText:self.detailText];
     [self.detailLabel setTextColor:[UIColor grayColor]];
     [self.detailLabel setFont:[UIFont systemFontOfSize:14]];
     [self.detailLabel setNumberOfLines:0];
-    
 }
 
 - (void)setupButton
@@ -120,15 +125,33 @@ static const CGFloat KDefaultRadius = 5.0;
         NSAssert(NO, @"error");
     }
     
-    if (self.cancelButtonTitle != nil && self.otherButtonTitles ==nil) {
+    if (self.cancelButtonTitle != nil) {
         self.cancelButton = [[UIButton alloc] init];
         [self.cancelButton setTitle:self.cancelButtonTitle forState:UIControlStateNormal];
+        [self.cancelButton setTag:KbuttonTag];
         [self.cancelButton addTarget:self action:@selector(buttonTouch:) forControlEvents:UIControlEventTouchUpInside];
         [[self.cancelButton layer] setCornerRadius:4.0];
-        [self.cancelButton setBackgroundColor:SUCCESS_COLOR];
+        [[self.cancelButton layer] setBorderWidth:1.0];
         [self.mainAlertView addSubview:self.cancelButton];
     }
     
+    if (self.otherButtonTitles != nil) {
+        NSMutableArray *tempButtonArray = [[NSMutableArray alloc] init];
+        NSInteger i = 1;
+        for (NSString *title in self.otherButtonTitles) {
+            
+            UIButton *button = [[UIButton alloc] init];
+            [button setTitle:title forState:UIControlStateNormal];
+            [button setTag:KbuttonTag + i];
+            [button addTarget:self action:@selector(buttonTouch:) forControlEvents:UIControlEventTouchUpInside];
+            [[button layer] setCornerRadius:4.0];
+            
+            [tempButtonArray addObject:button];
+            [self.mainAlertView addSubview:button];
+            i++;
+        }
+        self.otherButtons = [tempButtonArray copy];
+    }
 }
 
 #pragma mark Layout
@@ -138,6 +161,7 @@ static const CGFloat KDefaultRadius = 5.0;
     [self addView];
     [self setupLabel];
     [self setupButton];
+    [self updateModeStyle];
     [self.superView addSubview:self];
 }
 
@@ -150,7 +174,7 @@ static const CGFloat KDefaultRadius = 5.0;
     [[self.mainAlertView layer] setCornerRadius:self.radius];
     
     //logoView frame
-    CGPoint logoCenter =  CGPointMake(CGRectGetWidth(self.mainAlertView.frame)/2, HHALERTVIEW_PADDING+LOGOVIEW_SIZE/2);
+    CGPoint logoCenter =  CGPointMake(CGRectGetWidth(self.mainAlertView.frame)/2, KlogoView_Margin_top+LOGOVIEW_SIZE/2);
     [self.logoView setCenter:logoCenter];
     
     //titleLabel frame
@@ -172,8 +196,31 @@ static const CGFloat KDefaultRadius = 5.0;
         [self.cancelButton setCenter:buttonCenter];
     }
     
-    
-    
+    if (self.cancelButtonTitle != nil && [self.otherButtonTitles count]==1) {
+        CGRect buttonFrame = CGRectMake(0, 0, (HHALERTVIEW_WIDTH - HHALERTVIEW_PADDING *3)/2, 40);
+        [self.cancelButton setFrame:buttonFrame];
+        
+        CGPoint leftButtonCenter = CGPointMake(CGRectGetWidth(self.cancelButton.frame)/2 + HHALERTVIEW_PADDING, HHALERTVIEW_HEIGHT - HHALERTVIEW_PADDING - 20);
+        [self.cancelButton setCenter:leftButtonCenter];
+        
+        UIButton *rightButton = (UIButton *)self.otherButtons[0];
+        [rightButton setFrame:buttonFrame];
+        
+        CGPoint rightButtonCenter = CGPointMake(HHALERTVIEW_WIDTH - CGRectGetWidth(rightButton.frame)/2 - HHALERTVIEW_PADDING, HHALERTVIEW_HEIGHT - HHALERTVIEW_PADDING - 20);
+        [rightButton setCenter:rightButtonCenter];
+        
+    }
+    if (self.cancelButtonTitle == nil && [self.otherButtonTitles count]==1) {
+
+        UIButton *rightButton = (UIButton *)self.otherButtons[0];
+        CGRect buttonFrame = CGRectMake(0, 0, HHALERTVIEW_WIDTH - HHALERTVIEW_PADDING *2, 40);
+        [rightButton setFrame:buttonFrame];
+        
+        CGPoint buttonCenter = CGPointMake(CGRectGetWidth(self.mainAlertView.frame)/2, HHALERTVIEW_HEIGHT - HHALERTVIEW_PADDING - 20);
+        [rightButton setCenter:buttonCenter];
+        
+    }
+
 }
 
 #pragma mark Event Response
@@ -186,125 +233,66 @@ static const CGFloat KDefaultRadius = 5.0;
 
 #pragma mark show & hide 
 
-
 - (void)show
 {
-    [self setAlpha:1];
+    [UIView animateWithDuration:0.2 animations:^{
+        [self setAlpha:1];
+    } completion:^(BOOL finished) {
+        
+    }];
 }
-
 
 - (void)hide
 {
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         
         [self setAlpha:0];
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
+        [self unregisterKVC];
     }];
     
 }
 
-#pragma draw method
+#pragma mark KVC
 
-- (void)drawError
+- (void)registerKVC
 {
-//    [_logoView removeFromSuperview];
-//    _logoView = [[UIView alloc] initWithFrame:CGRectMake(([self getSelfSize].width-Simble_SIZE)/2, Simble_TOP, Simble_SIZE, Simble_SIZE)];
-//    
-//    UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(Simble_SIZE/2, Simble_SIZE/2) radius:Simble_SIZE/2 startAngle:0 endAngle:M_PI*2 clockwise:YES];
-//    
-//    CGPoint p1 =  CGPointMake(Simble_SIZE/4, Simble_SIZE/4);
-//    [path moveToPoint:p1];
-//    
-//    CGPoint p2 =  CGPointMake(Simble_SIZE/4*3, Simble_SIZE/4*3);
-//    [path addLineToPoint:p2];
-//    
-//    CGPoint p3 =  CGPointMake(Simble_SIZE/4*3, Simble_SIZE/4);
-//    [path moveToPoint:p3];
-//    
-//    CGPoint p4 =  CGPointMake(Simble_SIZE/4, Simble_SIZE/4*3);
-//    [path addLineToPoint:p4];
-//    
-//    
-//    CAShapeLayer *layer = [[CAShapeLayer alloc] init];
-//    layer.lineWidth = 5;
-//    layer.path = path.CGPath;
-//    layer.fillColor = [UIColor clearColor].CGColor;
-//    layer.strokeColor = [UIColor redColor].CGColor;
-//    
-//    
-//    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:NSStringFromSelector(@selector(strokeEnd))];
-//    animation.fromValue = @0;
-//    animation.toValue = @1;
-//    animation.duration = 0.5;
-//    [layer addAnimation:animation forKey:NSStringFromSelector(@selector(strokeEnd))];
-//    
-//    [_logoView.layer addSublayer:layer];
-//    [self addSubview:_logoView];
+    for (NSString *keypath in [self observableKeypaths]) {
+        [self addObserver:self forKeyPath:keypath options:NSKeyValueObservingOptionNew context:nil];
+    }
 }
 
-- (UIView *)getCheckmarkView
+- (void)unregisterKVC
 {
-    UIView *logoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, LOGOVIEW_SIZE, LOGOVIEW_SIZE)];
-    
-    UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(LOGOVIEW_SIZE/2, LOGOVIEW_SIZE/2) radius:LOGOVIEW_SIZE/2 startAngle:0 endAngle:M_PI*2 clockwise:YES];
-    
-    path.lineCapStyle = kCGLineCapRound;
-    path.lineJoinStyle = kCGLineCapRound;
-    
-    [path moveToPoint:CGPointMake(LOGOVIEW_SIZE/4, LOGOVIEW_SIZE/2)];
-    CGPoint p1 = CGPointMake(LOGOVIEW_SIZE/4+10, LOGOVIEW_SIZE/2+10);
-    [path addLineToPoint:p1];
-    
-    
-    CGPoint p2 = CGPointMake(LOGOVIEW_SIZE/4*3, LOGOVIEW_SIZE/4);
-    [path addLineToPoint:p2];
-    
-    CAShapeLayer *layer = [[CAShapeLayer alloc] init];
-    layer.fillColor = [UIColor clearColor].CGColor;
-    
-    layer.strokeColor = SUCCESS_COLOR.CGColor;
-    layer.lineWidth = 5;
-    layer.path = path.CGPath;
-    
-    [logoView.layer addSublayer:layer];
-    return logoView;
+    for (NSString *keypath in [self observableKeypaths]) {
+        [self removeObserver:self forKeyPath:keypath];
+    }
 }
 
-- (void)drawWraning
-{
-//    [_logoView removeFromSuperview];
-//    _logoView = [[UIView alloc] initWithFrame:CGRectMake(([self getSelfSize].width-Simble_SIZE)/2, Simble_TOP, Simble_SIZE, Simble_SIZE)];
-//    
-//    UIBezierPath *path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(Simble_SIZE/2, Simble_SIZE/2) radius:Simble_SIZE/2 startAngle:0 endAngle:M_PI*2 clockwise:YES];
-//    path.lineCapStyle = kCGLineCapRound;
-//    path.lineJoinStyle = kCGLineCapRound;
-//    
-//    [path moveToPoint:CGPointMake(Simble_SIZE/2, Simble_SIZE/6)];
-//    CGPoint p1 = CGPointMake(Simble_SIZE/2, Simble_SIZE/6*3.8);
-//    [path addLineToPoint:p1];
-//    
-//    [path moveToPoint:CGPointMake(Simble_SIZE/2, Simble_SIZE/6*4.5)];
-//    [path addArcWithCenter:CGPointMake(Simble_SIZE/2, Simble_SIZE/6*4.5) radius:2 startAngle:0 endAngle:M_PI*2 clockwise:YES];
-//    
-//    
-//    CAShapeLayer *layer = [[CAShapeLayer alloc] init];
-//    layer.fillColor = [UIColor clearColor].CGColor;
-//    layer.strokeColor = [UIColor orangeColor].CGColor;
-//    layer.lineWidth = 5;
-//    layer.path = path.CGPath;
-//    
-//    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:NSStringFromSelector(@selector(strokeEnd))];
-//    animation.fromValue = @0;
-//    animation.toValue = @1;
-//    animation.duration = 0.5;
-//    [layer addAnimation:animation forKey:NSStringFromSelector(@selector(strokeEnd))];
-//    
-//    [_logoView.layer addSublayer:layer];
-//    
-//    [self addSubview:_logoView];
+- (NSArray *)observableKeypaths {
+    return [NSArray arrayWithObjects:@"mode", nil];
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if (![NSThread isMainThread]) {
+        [self performSelectorOnMainThread:@selector(updateUIForKeypath:) withObject:keyPath waitUntilDone:NO];
+    }
+    else{
+        [self updateUIForKeypath:keyPath];
+    }
+}
+
+- (void)updateUIForKeypath:(NSString *)keypath
+{
+    if ([keypath isEqualToString:@"mode"]) {
+        [self updateModeStyle];
+    }
+}
 
 #pragma mark getter and setter
 
@@ -330,7 +318,7 @@ static const CGFloat KDefaultRadius = 5.0;
 - (UIView *)logoView
 {
     if (!_logoView) {
-        _logoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        _logoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, LOGOVIEW_SIZE, LOGOVIEW_SIZE)];
     }
     return _logoView;
 }

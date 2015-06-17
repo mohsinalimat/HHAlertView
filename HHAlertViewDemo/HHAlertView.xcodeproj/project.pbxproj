@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E5532FE01B31CCC0007E7DA3 /* UIView+Draw.m in Sources */ = {isa = PBXBuildFile; fileRef = E5532FDF1B31CCC0007E7DA3 /* UIView+Draw.m */; };
 		E5CE79F31A8CDBF60065833A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E5CE79F21A8CDBF60065833A /* main.m */; };
 		E5CE79F61A8CDBF60065833A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E5CE79F51A8CDBF60065833A /* AppDelegate.m */; };
 		E5CE79F91A8CDBF60065833A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E5CE79F81A8CDBF60065833A /* ViewController.m */; };
@@ -28,6 +29,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E5532FDE1B31CCC0007E7DA3 /* UIView+Draw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Draw.h"; sourceTree = "<group>"; };
+		E5532FDF1B31CCC0007E7DA3 /* UIView+Draw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Draw.m"; sourceTree = "<group>"; };
+		E5532FE11B31CD78007E7DA3 /* HHAlertViewConst.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HHAlertViewConst.h; sourceTree = "<group>"; };
 		E5CE79ED1A8CDBF60065833A /* HHAlertView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HHAlertView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5CE79F11A8CDBF60065833A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5CE79F21A8CDBF60065833A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -68,6 +72,9 @@
 			children = (
 				E5CE7A161A8CDC0B0065833A /* HHAlertView.h */,
 				E5CE7A171A8CDC0B0065833A /* HHAlertView.m */,
+				E5532FDE1B31CCC0007E7DA3 /* UIView+Draw.h */,
+				E5532FDF1B31CCC0007E7DA3 /* UIView+Draw.m */,
+				E5532FE11B31CD78007E7DA3 /* HHAlertViewConst.h */,
 			);
 			name = class;
 			sourceTree = "<group>";
@@ -236,6 +243,7 @@
 				E5CE79F61A8CDBF60065833A /* AppDelegate.m in Sources */,
 				E5CE7A181A8CDC0B0065833A /* HHAlertView.m in Sources */,
 				E5CE79F31A8CDBF60065833A /* main.m in Sources */,
+				E5532FE01B31CCC0007E7DA3 /* UIView+Draw.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

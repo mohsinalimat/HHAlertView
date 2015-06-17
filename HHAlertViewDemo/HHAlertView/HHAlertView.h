@@ -7,23 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HHAlertViewConst.h"
+#import "UIView+Draw.h"
 
 @protocol HHAlertViewDelegate;
 
-/**
- *  button index
- */
-typedef NS_ENUM(NSInteger, HHAlertButton){
-    HHAlertButtonOk,
-    HHAlertButtonCancel
-};
 /*
- *the style of the logo
+ * the style of the logo view
  */
 typedef NS_ENUM(NSInteger, HHAlertViewMode){
     HHAlertViewModeSuccess,
     HHAlertViewModeError,
-    HHAlertViewModeWarning
+    HHAlertViewModeWarning,
+    HHAlertViewModeDefault = HHAlertViewModeSuccess
 };
 
 typedef NS_ENUM(NSInteger, HHAlertEnterStyle){
@@ -32,12 +28,12 @@ typedef NS_ENUM(NSInteger, HHAlertEnterStyle){
 
 };
 #if NS_BLOCKS_AVAILABLE
+
 /**
  *  the block to tell user whitch button is clicked
  *
  *  @param button button
  */
-typedef void (^selectButton)(HHAlertButton buttonindex);
 typedef void (^selectButtonIndexComplete)(NSInteger index);
 
 #endif
@@ -77,6 +73,8 @@ typedef void (^selectButtonIndexComplete)(NSInteger index);
 
 @property (nonatomic, copy)   selectButtonIndexComplete completeBlock;
 
+@property (nonatomic, assign) HHAlertViewMode mode;
+
 @property (nonatomic, copy)   NSString *titleText;
 
 @property (nonatomic, copy)   NSString *detailText;
@@ -105,7 +103,7 @@ typedef void (^selectButtonIndexComplete)(NSInteger index);
  *
  *  @param button button
  */
-- (void)didClickButtonAnIndex:(HHAlertButton )button;
+- (void)didClickButtonAnIndex:(NSInteger )buttonIndex;
 
 @end
 
