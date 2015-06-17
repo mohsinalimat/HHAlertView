@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol HHAlertViewDelegate;
 
 /**
  *  button index
@@ -19,11 +20,10 @@ typedef NS_ENUM(NSInteger, HHAlertButton){
 /*
  *the style of the logo
  */
-typedef NS_ENUM(NSInteger, HHAlertStyle){
-    HHAlertStyleDefault,
-    HHAlertStyleOk,
-    HHAlertStyleError,
-    HHAlertStyleWraning,
+typedef NS_ENUM(NSInteger, HHAlertViewMode){
+    HHAlertViewModeSuccess,
+    HHAlertViewModeError,
+    HHAlertViewModeWarning
 };
 
 typedef NS_ENUM(NSInteger, HHAlertEnterStyle){
@@ -31,17 +31,73 @@ typedef NS_ENUM(NSInteger, HHAlertEnterStyle){
     
 
 };
-
+#if NS_BLOCKS_AVAILABLE
 /**
  *  the block to tell user whitch button is clicked
  *
  *  @param button button
  */
 typedef void (^selectButton)(HHAlertButton buttonindex);
+typedef void (^selectButtonIndexComplete)(NSInteger index);
+
+#endif
+
+
+
+@interface HHAlertView : UIView
+
+
+/**
+ *  show a alert view with title detailTitle and at least one button
+ *
+ *  @param title              <#title description#>
+ *  @param detailtext         <#detailtext description#>
+ *  @param delegate           <#delegate description#>
+ *  @param cancelButtonTitle  <#cancelButtonTitle description#>
+ *  @param otherButtonsTitles <#otherButtonsTitles description#>
+ *
+ *  @return instance of alertview
+ */
+- (instancetype)initWithTitle:(NSString *)title
+                   detailText:(NSString *)detailtext
+                      addView:(UIView *)superView
+            cancelButtonTitle:(NSString *)cancelButtonTitle
+            otherButtonTitles:(NSArray  *)otherButtonsTitles;
+
+
+/**
+ *  dismiss the alertview
+ */
+- (void)hide;
+
+- (void)show;
+
+
+@property (nonatomic, weak)   id<HHAlertViewDelegate> delegate;
+
+@property (nonatomic, copy)   selectButtonIndexComplete completeBlock;
+
+@property (nonatomic, copy)   NSString *titleText;
+
+@property (nonatomic, copy)   NSString *detailText;
+
+@property (nonatomic, strong) UIImage *customImage;
+
+@property (nonatomic, assign) CGFloat xOffset;
+
+@property (nonatomic, assign) CGFloat yOffset;
+
+@property (nonatomic, assign) CGFloat radius;
+
+@property (nonatomic, copy)   NSString  *cancelButtonTitle;
+
+@property (nonatomic, strong) NSArray   *otherButtonTitles;
+
+@end
+
 
 
 @protocol HHAlertViewDelegate <NSObject>
-
 
 @optional
 /**
@@ -53,57 +109,3 @@ typedef void (^selectButton)(HHAlertButton buttonindex);
 
 @end
 
-
-@interface HHAlertView : UIView
-
-/**
- *  the singleton of the calss
- *
- *  @return the singleton
- */
-+ (instancetype)shared;
-
-/**
- *  dismiss the alertview
- */
-- (void)hide;
-
-/**
- *  show the alertview and use delegate to know which button is clicked
- *
- *  @param HHAlertStyle style
- *  @param view         view
- *  @param title        title
- *  @param detail       etail
- *  @param cancel       cancelButtonTitle
- *  @param ok           okButtonTitle
- */
-- (void)showAlertWithStyle:(HHAlertStyle )HHAlertStyle
-                    inView:(UIView *)view
-                     Title:(NSString *)title
-                    detail:(NSString *)detail
-              cancelButton:(NSString *)cancel
-                  Okbutton:(NSString *)ok;
-
-
-/**
- *  show the alertview and use Block to know which button is clicked
- *
- *  @param HHAlertStyle style
- *  @param view         view
- *  @param title        title
- *  @param detail       etail
- *  @param cancel       cancelButtonTitle
- *  @param ok           okButtonTitle
- */
-- (void)showAlertWithStyle:(HHAlertStyle)HHAlertStyle
-                    inView:(UIView *)view
-                     Title:(NSString *)title
-                    detail:(NSString *)detail
-              cancelButton:(NSString *)cancel
-                  Okbutton:(NSString *)ok
-                     block:(selectButton)block;
-
-@property (nonatomic, weak) id<HHAlertViewDelegate> delegate;
-
-@end
