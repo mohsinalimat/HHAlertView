@@ -110,9 +110,7 @@
         }
     }
     if(self.mode == HHAlertViewModeCustom){
-        
-        //[self cleanLayer:self.logoView];
-        
+    
         if (self.customView) {
             [self.logoView hh_drawCustomeView:self.customView];
             
@@ -260,8 +258,48 @@
 
 - (void)show
 {
-    [UIView animateWithDuration:0.2 animations:^{
+    NSTimeInterval interval = 0.3;
+    CGRect frame = self.mainAlertView.frame;
+    if (self.enterMode) {
+        switch (self.enterMode) {
+            case HHAlertEnterModeTop:
+            {
+                frame.origin.y -= CGRectGetHeight(self.superView.frame);
+                interval = 0.5;
+            }
+                break;
+            case HHAlertEnterModeBottom:
+            {
+                frame.origin.y += CGRectGetHeight(self.superView.frame);
+                interval = 0.5;
+            }
+                break;
+            case HHAlertEnterModeLeft:
+            {
+                frame.origin.y -= CGRectGetWidth(self.superView.frame);
+                interval = 0.5;
+            }
+                break;
+            case HHAlertEnterModeRight:
+            {
+                frame.origin.x += CGRectGetWidth(self.superView.frame);
+                interval = 0.5;
+            }
+                break;
+            case HHAlertEnterModeFadeIn:
+            {
+           
+            }
+                break;
+            
+            default:
+                break;
+        }
+    }
+    [self.mainAlertView setFrame:frame];
+    [UIView animateWithDuration:interval animations:^{
         [self setAlpha:1];
+        [self.mainAlertView setCenter:self.superView.center];
     } completion:^(BOOL finished) {
         
     }];
@@ -275,9 +313,49 @@
 
 - (void)hide
 {
-    [UIView animateWithDuration:0.3 animations:^{
-        
+    
+    NSTimeInterval interval = 0.3;
+    CGRect frame = self.mainAlertView.frame;
+    if (self.leaveMode) {
+        switch (self.leaveMode) {
+            case HHAlertLeaveModeTop:
+            {
+                frame.origin.y -= CGRectGetHeight(self.superView.frame);
+                interval = 0.5;
+            }
+                break;
+            case HHAlertLeaveModeBottom:
+            {
+                frame.origin.y += CGRectGetHeight(self.superView.frame);
+                interval = 0.5;
+            }
+                break;
+            case HHAlertLeaveModeLeft:
+            {
+                frame.origin.y -= CGRectGetWidth(self.superView.frame);
+                interval = 0.5;
+            }
+                break;
+            case HHAlertLeaveModeRight:
+            {
+                frame.origin.x += CGRectGetWidth(self.superView.frame);
+                interval = 0.5;
+            }
+                break;
+            case HHAlertLeaveModeFadeOut:
+            {
+                
+            }
+                break;
+                
+            default:
+                break;
+        }
+    }
+ 
+    [UIView animateWithDuration:interval animations:^{
         [self setAlpha:0];
+        [self.mainAlertView setFrame:frame];
     } completion:^(BOOL finished) {
         if (self.removeFromSuperViewOnHide) {
             [self removeFromSuperview];

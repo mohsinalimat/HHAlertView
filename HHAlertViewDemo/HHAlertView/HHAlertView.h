@@ -19,18 +19,25 @@ typedef NS_ENUM(NSInteger, HHAlertViewMode){
     HHAlertViewModeSuccess,
     HHAlertViewModeError,
     HHAlertViewModeWarning,
+    HHAlertViewModeInfo,
     HHAlertViewModeDefault,
     HHAlertViewModeCustom
 };
 
 typedef NS_ENUM(NSInteger, HHAlertEnterMode){
     HHAlertEnterModeFadeIn,
-    
-
+    HHAlertEnterModeTop,
+    HHAlertEnterModeBottom,
+    HHAlertEnterModeLeft,
+    HHAlertEnterModeRight,
 };
 
 typedef NS_ENUM(NSInteger, HHAlertLeaveMode){
     HHAlertLeaveModeFadeOut,
+    HHAlertLeaveModeTop,
+    HHAlertLeaveModeBottom,
+    HHAlertLeaveModeLeft,
+    HHAlertLeaveModeRight,
     
 };
 #if NS_BLOCKS_AVAILABLE
@@ -76,6 +83,7 @@ typedef void (^selectButtonIndexComplete)(NSInteger index);
  */
 - (void)show;
 
+#if NS_BLOCKS_AVAILABLE
 /**
  *  show method with block to konw which button clicked
  *
@@ -83,15 +91,26 @@ typedef void (^selectButtonIndexComplete)(NSInteger index);
  */
 - (void)showWithBlock:(selectButtonIndexComplete)completeBlock;
 
+#endif
 
 @property (nonatomic, weak)   id<HHAlertViewDelegate> delegate;
 
+#if NS_BLOCKS_AVAILABLE
+
 @property (nonatomic, copy)   selectButtonIndexComplete completeBlock;
+
+#endif
+
 
 /**
  *  HHAlertView style mode
  */
 @property (nonatomic, assign) HHAlertViewMode mode;
+
+
+@property (nonatomic, assign) HHAlertEnterMode enterMode;
+
+@property (nonatomic, assign) HHAlertLeaveMode leaveMode;
 
 /**
  * An optional short message to be displayed on the title label.

@@ -24,6 +24,8 @@
     
 
    HHAlertView *alertview = [[HHAlertView alloc] initWithTitle:@"成功" detailText:@"恭喜你，操作顺利的实行了！\n换个行试试看效果" addView:self.view cancelButtonTitle:nil otherButtonTitles:@[@"确定"]];
+    [alertview setEnterMode:HHAlertEnterModeTop];
+    [alertview setLeaveMode:HHAlertLeaveModeBottom];
     [alertview showWithBlock:^(NSInteger index) {
         NSLog(@"%ld",index);
     }];
@@ -31,6 +33,7 @@
 - (IBAction)wraing:(id)sender {
     HHAlertView *alertview = [[HHAlertView alloc] initWithTitle:@"警告" detailText:@"这可能导致你的iPhone出大事噢，确定要这样做嘛?" addView:self.view cancelButtonTitle:@"取消" otherButtonTitles:nil];
     alertview.mode = HHAlertViewModeWarning;
+    [alertview setEnterMode:HHAlertEnterModeBottom];
     [alertview setDelegate:self];
     [alertview show];
     
